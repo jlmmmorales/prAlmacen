@@ -153,5 +153,34 @@ public class ListaPedidosTest {
 				assertThat(e.getMessage(), containsString("El pedido " + idPedido + " no existe"));
 			}
 	}
+		
+		@Test
+		public void siSeEliminaPedidoExistenteEntoncesSuIdentificadorQuedaLibre() {
+			Pedido pedido = listaPedidos.generarPedidoEnEspera();
+			int entradasLibres = listaPedidos.entradasLibres();
+			int idPedido = pedido.getId();
+			// crear objeto mock
+			IAgenteDistribuidor agente = mock(IAgenteDistribuidor.class);
+			
+			//Elimino el pedido
+			listaPedidos.eliminaPedido(pedido.getId(), agente);
+			
+			assertEquals(listaPedidos.identificadorEstaLibre(idPedido), true);
+
+		}
+		
+		@Test
+		public void siSePasaUnPedidoADistribucionYHayAgentesEntoncesSeSolicitaAgente() {
+			Pedido pedido = listaPedidos.generarPedidoEnEspera();
+			int entradasLibres = listaPedidos.entradasLibres();
+			// crear objeto mock
+			IAgenteDistribuidor agente = mock(IAgenteDistribuidor.class);
+			when(agente.hayAgenteDisponible()).thenReturn(true); 
+			
+			listaPedidos.pasarPedidoADistribucion(pedido.getId(), agente);
+			verify(agente,times(1)).hayAgenteDisponible();
+			verify(agente,times(1)).solicitarAgente();
+
+		}
 
 }
