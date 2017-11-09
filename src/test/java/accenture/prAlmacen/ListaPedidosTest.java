@@ -7,6 +7,8 @@ import static org.hamcrest.Matchers.*;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+//Añado algo porque lo necesito
+import org.junit.*;
 
 public class ListaPedidosTest {
 	private static final int ENTRADAS_LIBRES = 10;
